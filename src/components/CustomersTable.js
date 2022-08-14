@@ -7,11 +7,45 @@ import {
   Row,
   Cell,
 } from "@table-library/react-table-library/table";
-import { customersData } from "../data/customersData";
 
-export default function CustomersTable() {
-  const data = { nodes: customersData };
-  console.log(data);
+import { useReducer, useState, useEffect } from "react";
+
+export default function CustomersTable(props) {
+  let data = { nodes: props.users };
+  const [updatedUser, setUpdatedUser] = useState(null);
+
+  const userStatusReducer = (state, action) => {
+    console.log(state);
+    let updatedUser = {
+      previous: Object.assign({}, state[action.index]),
+      current: state[action.index],
+      action: action.type,
+    };
+    switch (action.type) {
+      case "ACTIVATE":
+        updatedUser.current.isActive = true;
+        setUpdatedUser(updatedUser);
+
+        let currentUser = updatedUser.current;
+        return { ...state, currentUser };
+
+      case "DEACTIVATE":
+        updatedUser.current.isActive = false;
+        setUpdatedUser(updatedUser);
+
+        currentUser = updatedUser.current;
+        return { ...state, currentUser };
+      default:
+        return state;
+    }
+  };
+
+  const [customers, dispatch] = useReducer(userStatusReducer, props.users);
+
+  useEffect(() => {
+    props.bubbleUpdatedUser(updatedUser);
+  }, [updatedUser]);
+
   return (
     <>
       <Table data={data}>
@@ -25,20 +59,38 @@ export default function CustomersTable() {
                 <HeaderCell>Address</HeaderCell>
                 <HeaderCell>Status</HeaderCell>
                 <HeaderCell>Digest Value</HeaderCell>
-                <HeaderCell>Update</HeaderCell>
+                <HeaderCell>Activate</HeaderCell>
+                <HeaderCell>Deactivate</HeaderCell>
               </HeaderRow>
             </Header>
 
             <Body>
-              {tableList.map((user) => (
-                <Row key={user._id} user={user} className={"bg-blue-200"}>
+              {tableList.map((user, index) => (
+                <Row
+                  key={user._id}
+                  user={user}
+                  className={`${
+                    user.isActive ? "bg-green-200" : "bg-blue-200"
+                  }`}
+                >
                   <Cell>{user.name.first}</Cell>
                   <Cell>{user.name.last}</Cell>
                   <Cell>{user.company}</Cell>
                   <Cell>{user.address}</Cell>
                   <Cell>{user.isActive.toString()}</Cell>
-                  <Cell>{""}</Cell>
-                  <Cell>{""}</Cell>
+                  <Cell>"..."</Cell>
+                  <Cell
+                    onClick={() => dispatch({ type: "ACTIVATE", index: index })}
+                  >
+                    {"Activate"}
+                  </Cell>
+                  <Cell
+                    onClick={() =>
+                      dispatch({ type: "DEACTIVATE", index: index })
+                    }
+                  >
+                    {"Deactivate"}
+                  </Cell>
                 </Row>
               ))}
             </Body>
