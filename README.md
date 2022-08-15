@@ -1,5 +1,15 @@
 # indie users management app
 
+## Run with Docker
+
+docker build . -t indie-users
+docker run -p 3000:3000 -d indie-users
+
+## Run with npm
+
+npm install
+npm run start
+
 ## TODO
 
 ## Requirements
