@@ -46,6 +46,8 @@ export default function CustomersTable(props) {
     props.bubbleUpdatedUser(updatedUser);
   }, [updatedUser]);
 
+  // TODO: if customer is active, the row allows for a double clickable event routing to the complete details page
+  // each row
   return (
     <>
       <Table data={data}>
