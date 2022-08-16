@@ -26,14 +26,7 @@ const App = () => {
       <React.StrictMode>
         <h1 className="font-bold underline">Indie Users Management App</h1>
         <Link to="/customers">Customers</Link>
-        <CustomersResource>
-          <ActiveUsersCounter activeUsersCount={activeUsersCount} />
-          <CustomersTable
-            users={users}
-            bubbleUpdatedUser={bubbleUpdatedUser}
-            setUsers={setUsers}
-          />
-        </CustomersResource>
+        <CustomersResource />
       </React.StrictMode>
     </div>
   );

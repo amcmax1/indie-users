@@ -58,15 +58,28 @@ export default function CustomersList(props) {
         setPromiseState("failed");
       });
   }, [props.rawCustomersData]);
-
-  return props.rawCustomersData.map((customer) => (
-    <Customer
-      key={customer._id}
-      fullName={customer.name.first + customer.name.last}
-      customer={customer}
-      promiseState={promiseState}
-      activeStatus={customer.isActive ? "active" : "inactive"}
-      userDigests={userDigests}
-    />
-  ));
+  return (
+    <table>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Company</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Digest Value</th>
+        <th>Activate</th>
+        <th>Deactivate</th>
+      </tr>
+      {props.rawCustomersData.map((customer) => (
+        <Customer
+          key={customer._id}
+          fullName={customer.name.first + customer.name.last}
+          customer={customer}
+          promiseState={promiseState}
+          activeStatus={customer.isActive ? "active" : "inactive"}
+          userDigests={userDigests}
+        />
+      ))}
+    </table>
+  );
 }

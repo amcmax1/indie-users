@@ -12,6 +12,15 @@ export default function Customer(props) {
   }, [props.promiseState]);
 
   return (
-    <></> // render prop/element for table presentation
+    <tr>
+      <td>{props.customer.name.first}</td>
+      <td>{props.customer.name.last}</td>
+      <td>{props.customer.company}</td>
+      <td>{props.customer.address}</td>
+      <td>{props.activeStatus}</td>
+      <td>digest</td>
+      <td>"Activate"</td>
+      <td>"Deactivate"</td>
+    </tr>
   );
 }
