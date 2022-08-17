@@ -37,12 +37,6 @@ export default function Customer(props) {
       >
         Activate
       </td>
-      <td
-        className="py-4 px-6"
-        onClick={() => dispatch({ type: "DEACTIVATE" })} // TODO: replace with toggle switch
-      >
-        Deactivate
-      </td>
     </tr>
   );
 }
