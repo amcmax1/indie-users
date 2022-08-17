@@ -7,6 +7,20 @@ const API_URL = "https://api.hashify.net/hash/md4/hex?value=";
 
 export default function CustomersList(props) {
   const [rawData, setRawData] = useState(props.rawCustomersData);
+  const [users, setUsers] = useState([]);
+  const [activeUsersCount, setActiveUsersCount] = useState(0);
+
+  function getTotalActiveUsersCount(users) {
+    let activeUsersCount = users.filter(
+      (user) => user.isActive === true
+    ).length;
+    return activeUsersCount;
+  }
+
+  function bubbleUpdatedUser(updatedUser) {
+    console.log("UPDATED USER", updatedUser);
+    setActiveUsersCount(getTotalActiveUsersCount(users));
+  }
 
   function constructCustomerObjects(rawData) {
     let customerObjects = [];
@@ -59,27 +73,46 @@ export default function CustomersList(props) {
       });
   }, [props.rawCustomersData]);
   return (
-    <table>
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Company</th>
-        <th>Address</th>
-        <th>Status</th>
-        <th>Digest Value</th>
-        <th>Activate</th>
-        <th>Deactivate</th>
-      </tr>
-      {props.rawCustomersData.map((customer) => (
-        <Customer
-          key={customer._id}
-          fullName={customer.name.first + customer.name.last}
-          customer={customer}
-          promiseState={promiseState}
-          activeStatus={customer.isActive ? "active" : "inactive"}
-          userDigests={userDigests}
-        />
-      ))}
-    </table>
+    <div class="overflow-x-auto relative">
+      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-red-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" className="py-3 px-6">
+              Name
+            </th>
+            <th scope="col" className="py-3 px-6">
+              Company
+            </th>
+            <th scope="col" className="py-3 px-6">
+              Address
+            </th>
+            <th scope="col" className="py-3 px-6">
+              Status
+            </th>
+            <th scope="col" className="py-3 px-6">
+              Digest Value
+            </th>
+            <th scope="col" className="py-3 px-6">
+              Activate
+            </th>
+            <th scope="col" className="py-3 px-6">
+              Deactivate
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.rawCustomersData.map((customer) => (
+            <Customer
+              key={customer._id}
+              fullName={customer.name.first + customer.name.last}
+              customer={customer}
+              promiseState={promiseState}
+              activeStatus={customer.isActive ? "active" : "inactive"}
+              userDigests={userDigests}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

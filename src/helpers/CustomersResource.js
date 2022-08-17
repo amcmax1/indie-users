@@ -29,15 +29,9 @@ export default function CustomersResource() {
         if (data.loading) return "renderLoader";
         return (
           <>
-            <CustomersList rawCustomersData={data.payload}>
-              <ActiveUsersCounter activeUsersCount={activeUsersCount} />
-              <CustomersTable
-                users={users}
-                bubbleUpdatedUser={bubbleUpdatedUser}
-                setUsers={setUsers}
-                customerList={<CustomersList />}
-              />
-            </CustomersList>
+            <ActiveUsersCounter activeUsersCount={activeUsersCount} />
+
+            <CustomersList rawCustomersData={data.payload}></CustomersList>
           </>
         );
       }}

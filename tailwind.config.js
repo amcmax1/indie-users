@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  important: "[data-table-library_table]",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   presets: [],
   darkMode: "media", // or 'class'

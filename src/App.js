@@ -6,21 +6,6 @@ import CustomersList from "./components/CustomersList";
 import CustomersResource from "./helpers/CustomersResource.js";
 
 const App = () => {
-  const [users, setUsers] = useState([]);
-  const [activeUsersCount, setActiveUsersCount] = useState(0);
-
-  function getTotalActiveUsersCount(users) {
-    let activeUsersCount = users.filter(
-      (user) => user.isActive === true
-    ).length;
-    return activeUsersCount;
-  }
-
-  function bubbleUpdatedUser(updatedUser) {
-    console.log("UPDATED USER", updatedUser);
-    setActiveUsersCount(getTotalActiveUsersCount(users));
-  }
-
   return (
     <div>
       <React.StrictMode>
