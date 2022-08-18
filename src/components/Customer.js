@@ -32,13 +32,21 @@ export default function Customer(props) {
       </td>
       <td className="py-4 px-6 font-medium">{props.activeStatus}</td>
       <td className="py-4 px-6">{digest ? digest : "...loading"}</td>
-
-      <td
-        className="py-4 px-6"
-        onClick={() => dispatch({ type: "activate", user: props.customer })}
-      >
-        Activate
-      </td>
+      {props.customer.isActive ? (
+        <td
+          className="py-4 px-6"
+          onClick={() => dispatch({ type: "deactivate", user: props.customer })}
+        >
+          Deactivate
+        </td>
+      ) : (
+        <td
+          className="py-4 px-6"
+          onClick={() => dispatch({ type: "activate", user: props.customer })}
+        >
+          Activate
+        </td>
+      )}
     </tr>
   );
 }
