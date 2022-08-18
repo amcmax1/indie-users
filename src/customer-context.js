@@ -10,10 +10,41 @@ function userReducer(state, action) {
       return { ...state, users: action.users };
     }
     case "activate": {
+      let updatedUser = action.user;
+      updatedUser = state.users.map((obj) => {
+        if (obj._id === updatedUser._id) {
+          return { ...obj, isActive: true };
+        }
+        return obj;
+      });
+
+      console.log(state);
+
       return {
         ...state,
+        updatedUser: updatedUser,
+        users: updatedUser,
         user: action.user,
-        activeUsersCount: state.activeUsersCount + 1,
+        activeUsersCount: state.activeUsersCount + 1, //TODO: fix
+      };
+    }
+    case "deactivate": {
+      let updatedUser = action.user;
+      updatedUser = state.users.map((obj) => {
+        if (obj._id === updatedUser._id) {
+          return { ...obj, isActive: false };
+        }
+        return obj;
+      });
+
+      console.log(state);
+
+      return {
+        ...state,
+        updatedUser: updatedUser,
+        users: updatedUser,
+        user: action.user,
+        activeUsersCount: state.activeUsersCount - 1, //TODO: fix
       };
     }
     default: {
