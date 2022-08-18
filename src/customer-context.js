@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useState, useMemo } from "react";
-import Resource from "./helpers/Resource";
 
 const CustomerContext = React.createContext();
 
@@ -45,6 +44,13 @@ function userReducer(state, action) {
         users: updatedUser,
         user: action.user,
         activeUsersCount: state.activeUsersCount - 1, //TODO: fix
+      };
+    }
+    case "updateUsers": {
+      let updatedUsers = action.updatedUsers;
+      return {
+        ...state,
+        users: updatedUsers,
       };
     }
     default: {

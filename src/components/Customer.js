@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCustomerContext } from ".././customer-context";
 
 export default function Customer(props) {
   const [digest, setDigest] = useState(); // TODO: await
   const { dispatch } = useCustomerContext();
+
+  useEffect(() => {
+    setDigest(props.customer.fetchedDigest);
+  }, [props.customer]);
 
   function toTitleCase(str) {
     return str.replace(/\w\S*/g, function (txt) {

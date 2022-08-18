@@ -9,18 +9,13 @@ export default function CustomersList(props) {
     state: { users },
   } = useCustomerContext();
   const { dispatch } = useCustomerContext();
-  let fullNames = users.map(
-    //TODO: extract
-    (c) => `${c.name.first + c.name.last}`
-  );
+  let fullNames = users.map((c) => `${c.name.first + c.name.last}`);
   const [userDigests, setUserDigests] = useState([]);
   const [promiseState, setPromiseState] = useState(null);
   const urlsArray = function (fullNames) {
     //TODO: extract
     let urls = [];
-    fullNames
-      .slice(0, 10) //TODO: REMOVE
-      .forEach((fullName) => urls.push(`${API_URL + fullName}`));
+    fullNames.forEach((fullName) => urls.push(`${API_URL + fullName}`));
     return urls;
   };
 
@@ -37,7 +32,6 @@ export default function CustomersList(props) {
         let userDigest = {
           fullName: fullName,
           digest: data.Digest,
-          raw: data,
         };
 
         return userDigest;
@@ -50,9 +44,18 @@ export default function CustomersList(props) {
     setPromiseState("pending");
     digests(digestUrls)
       .then((usersData) => {
-        setPromiseState("fullfilled");
-        setUserDigests(usersData);
+        let updatedUsers = users;
+        updatedUsers = updatedUsers.map((user) => {
+          let userFullName = user.name.first + user.name.last;
+          const digestObj = usersData.find(
+            (obj) => obj.fullName === userFullName
+          );
+          let fetchedDigest = digestObj.digest;
+          return digestObj ? { ...user, fetchedDigest } : user;
+        });
+        dispatch({ type: "updateUsers", updatedUsers: updatedUsers });
       })
+      .then(setPromiseState("fullfilled"))
       .catch((err) => {
         setPromiseState("failed");
       });
@@ -87,11 +90,8 @@ export default function CustomersList(props) {
           {users.map((customer) => (
             <Customer
               key={customer._id}
-              fullName={customer.name.first + customer.name.last}
               customer={customer}
-              promiseState={promiseState}
               activeStatus={customer.isActive ? "active" : "inactive"}
-              userDigests={userDigests}
             />
           ))}
         </tbody>
