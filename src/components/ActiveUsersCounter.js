@@ -1,3 +1,8 @@
-export default function ActiveCustomersCounter(props) {
-  return <div>Active Customers: {props.activeUsersCount}</div>;
+import { useCustomerContext } from ".././customer-context";
+
+export default function ActiveCustomersCounter() {
+  const {
+    state: { activeUsersCount },
+  } = useCustomerContext();
+  return <div>Active Customers: {activeUsersCount}</div>;
 }

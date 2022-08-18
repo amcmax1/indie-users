@@ -1,7 +1,9 @@
-import { useState, useReducer, useEffect } from "react";
+import { useState } from "react";
+import { useCustomerContext } from ".././customer-context";
 
 export default function Customer(props) {
   const [digest, setDigest] = useState(); // TODO: await
+  const { dispatch } = useCustomerContext();
 
   function toTitleCase(str) {
     return str.replace(/\w\S*/g, function (txt) {
@@ -31,10 +33,7 @@ export default function Customer(props) {
       <td className="py-4 px-6 font-medium">{props.activeStatus}</td>
       <td className="py-4 px-6">{digest ? digest : "...loading"}</td>
 
-      <td
-        className="py-4 px-6"
-        onClick={() => dispatch({ type: "DEACTIVATE" })}
-      >
+      <td className="py-4 px-6" onClick={() => dispatch({ type: "activate" })}>
         Activate
       </td>
     </tr>

@@ -1,36 +1,21 @@
-import { useDeferredValue, useEffect, useState, useLayoutEffect } from "react";
+import { useDeferredValue, useEffect, useState, useReducer } from "react";
 import Customer from "./Customer";
-import Resource from "../helpers/Resource";
-
+import { useCustomerContext } from "../customer-context";
 const renderLoader = () => <p>Loading</p>;
 const API_URL = "https://api.hashify.net/hash/md4/hex?value=";
 
 export default function CustomersList(props) {
-  const [rawData, setRawData] = useState(props.rawCustomersData);
-  const [users, setUsers] = useState([]);
-  const [activeUsersCount, setActiveUsersCount] = useState(0);
-
-  function getTotalActiveUsersCount(users) {
-    let activeUsersCount = users.filter(
-      (user) => user.isActive === true
-    ).length;
-    return activeUsersCount;
-  }
-
-  function bubbleUpdatedUser(updatedUser) {
-    console.log("UPDATED USER", updatedUser);
-    setActiveUsersCount(getTotalActiveUsersCount(users));
-  }
-
-  function constructCustomerObjects(rawData) {
-    let customerObjects = [];
-  }
+  const { dispatch } = useCustomerContext();
+  useReducer(dispatch({ type: "setUsers", users: props.rawCustomersData }));
 
   let fullNames = props.rawCustomersData.map(
+    //TODO: extract
     (c) => `${c.name.first + c.name.last}`
   );
-
+  const [userDigests, setUserDigests] = useState([]);
+  const [promiseState, setPromiseState] = useState(null);
   const urlsArray = function (fullNames) {
+    //TODO: extract
     let urls = [];
     fullNames
       .slice(0, 10) //TODO: REMOVE
@@ -38,9 +23,11 @@ export default function CustomersList(props) {
     return urls;
   };
 
-  let fullNamesUrls = urlsArray(fullNames);
+  const [digestUrls, setDigestUrls] = useState(urlsArray(fullNames));
 
-  const digests = async (urls) =>
+  const digests = async (
+    urls //TODO: extract
+  ) =>
     await Promise.all(
       urls.map(async (url) => {
         const resp = await fetch(url);
@@ -51,15 +38,12 @@ export default function CustomersList(props) {
           digest: data.Digest,
           raw: data,
         };
+
         return userDigest;
       })
     ).then((userDigest) => {
       return userDigest;
     });
-
-  const [userDigests, setUserDigests] = useState([]);
-  const [promiseState, setPromiseState] = useState(null);
-  const [digestUrls, setDigestUrls] = useState(fullNamesUrls);
 
   useEffect(() => {
     setPromiseState("pending");
@@ -72,6 +56,7 @@ export default function CustomersList(props) {
         setPromiseState("failed");
       });
   }, [props.rawCustomersData]);
+
   return (
     <div class="overflow-x-auto w-full">
       <table className="text-sm text-left mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
