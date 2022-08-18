@@ -33,7 +33,10 @@ export default function Customer(props) {
       <td className="py-4 px-6 font-medium">{props.activeStatus}</td>
       <td className="py-4 px-6">{digest ? digest : "...loading"}</td>
 
-      <td className="py-4 px-6" onClick={() => dispatch({ type: "activate" })}>
+      <td
+        className="py-4 px-6"
+        onClick={() => dispatch({ type: "activate", user: props.customer })}
+      >
         Activate
       </td>
     </tr>

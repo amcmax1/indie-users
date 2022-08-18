@@ -5,10 +5,11 @@ const renderLoader = () => <p>Loading</p>;
 const API_URL = "https://api.hashify.net/hash/md4/hex?value=";
 
 export default function CustomersList(props) {
+  const {
+    state: { users },
+  } = useCustomerContext();
   const { dispatch } = useCustomerContext();
-  useReducer(dispatch({ type: "setUsers", users: props.rawCustomersData }));
-
-  let fullNames = props.rawCustomersData.map(
+  let fullNames = users.map(
     //TODO: extract
     (c) => `${c.name.first + c.name.last}`
   );
@@ -55,7 +56,7 @@ export default function CustomersList(props) {
       .catch((err) => {
         setPromiseState("failed");
       });
-  }, [props.rawCustomersData]);
+  }, []);
 
   return (
     <div class="overflow-x-auto w-full">
@@ -83,7 +84,7 @@ export default function CustomersList(props) {
           </tr>
         </thead>
         <tbody>
-          {props.rawCustomersData.map((customer) => (
+          {users.map((customer) => (
             <Customer
               key={customer._id}
               fullName={customer.name.first + customer.name.last}
