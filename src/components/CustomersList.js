@@ -63,7 +63,7 @@ export default function CustomersList(props) {
 
   return (
     <div class="overflow-x-auto w-full">
-      <table className="text-sm text-left mx-auto max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
+      <table className="table-auto overflow-scroll w-full text-sm text-left mx-auto max-w-4xl whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300">
         <thead className="text-xs text-gray-700 uppercase bg-red-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" className="py-3 px-6">
